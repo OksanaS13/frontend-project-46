@@ -1,35 +1,5 @@
-import fs from 'fs';
 import _ from 'lodash';
-
-const getObject = (pathToFile) => {
-  const [, extension] = pathToFile.split('.');
-  if (extension === 'json') {
-    return JSON.parse(fs.readFileSync(pathToFile, 'utf8'));
-  }
-  return Error(`Unknown extension: '${extension}'!`);
-};
-
-const convertToString = (diffs, keys) => {
-  const result = keys.reduce((acc, key) => {
-    const strings = [];
-
-    if (diffs[key].status === 'equal') {
-      strings.push(`    ${key}: ${diffs[key].value}`);
-    }
-
-    if (diffs[key].value1 !== undefined) {
-      strings.push(`  - ${key}: ${diffs[key].value1}`);
-    }
-    if (diffs[key].value2 !== undefined) {
-      strings.push(`  + ${key}: ${diffs[key].value2}`);
-    }
-    return [...acc, ...strings];
-  }, []);
-
-  return `{
-${result.join('\n')}
-}`;
-};
+import { getObject, convertToString } from './utils.js';
 
 const findDifferences = (pathToFile1, pathToFile2) => {
   const file1 = getObject(pathToFile1);
@@ -44,9 +14,7 @@ const findDifferences = (pathToFile1, pathToFile2) => {
     return { ...acc, [key]: { value1: file1[key], value2: file2[key], status: 'modified' } };
   }, {});
 
-  return convertToString(diffs, keys);
+  return convertToString(diffs);
 };
-
-export { getObject, convertToString };
 
 export default findDifferences;
