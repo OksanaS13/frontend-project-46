@@ -1,20 +1,17 @@
-import _ from 'lodash';
-import { getObject, convertToString } from './utils.js';
+import {
+  buildTreeOfDifferences, makeDifferenceList, convertToString, readFile, getExtension,
+} from './utils.js';
+import toParseFile from './parsers.js';
 
-const findDifferences = (pathToFile1, pathToFile2) => {
-  const file1 = getObject(pathToFile1);
-  const file2 = getObject(pathToFile2);
+const printDifferences = (pathToFile1, pathToFile2) => {
+  const [file1, file2] = [readFile(pathToFile1), readFile(pathToFile2)];
+  const [extension1, extension2] = [getExtension(pathToFile1), getExtension(pathToFile2)];
+  const object1 = toParseFile(file1, extension1);
+  const object2 = toParseFile(file2, extension2);
+  const diffsTree = buildTreeOfDifferences(object1, object2);
+  const orderedDiffs = makeDifferenceList(diffsTree);
 
-  const keys = _.uniq([...Object.keys(file1), ...Object.keys(file2)]).sort();
-
-  const diffs = keys.reduce((acc, key) => {
-    if (file1[key] === file2[key]) {
-      return { ...acc, [key]: { value: file1[key], status: 'equal' } };
-    }
-    return { ...acc, [key]: { value1: file1[key], value2: file2[key], status: 'modified' } };
-  }, {});
-
-  return convertToString(diffs);
+  return convertToString(orderedDiffs);
 };
 
-export default findDifferences;
+export default printDifferences;

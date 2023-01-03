@@ -1,17 +1,28 @@
-import fs from 'fs';
+import _ from 'lodash';
 import process from 'process';
 import path from 'path';
+import fs from 'fs';
 
-const getObject = (pathToFile) => {
-  const correctPath = path.resolve(process.cwd(), pathToFile);
-  const [, extension] = pathToFile.split('.');
-  if (extension === 'json') {
-    return JSON.parse(fs.readFileSync(correctPath, 'utf8'));
-  }
-  return Error(`Unknown extension: '${extension}'!`);
+const buildCorrectPath = (pathToFile) => path.resolve(process.cwd(), pathToFile);
+
+const readFile = (pathToFile) => fs.readFileSync(buildCorrectPath(pathToFile), 'utf8');
+
+const getExtension = (pathToFile) => path.extname(pathToFile);
+
+const buildTreeOfDifferences = (object1, object2) => {
+  const keys = _.uniq([...Object.keys(object1), ...Object.keys(object2)]).sort();
+
+  const diffs = keys.reduce((acc, key) => {
+    if (object1[key] === object2[key]) {
+      return { ...acc, [key]: { value: object1[key], status: 'equal' } };
+    }
+    return { ...acc, [key]: { value1: object1[key], value2: object2[key], status: 'modified' } };
+  }, {});
+
+  return diffs;
 };
 
-const convertToString = (object) => {
+const makeDifferenceList = (object) => {
   const keys = Object.keys(object);
   const result = keys.reduce((acc, key) => {
     const strings = [];
@@ -30,9 +41,17 @@ const convertToString = (object) => {
     return [...acc, ...strings];
   }, []);
 
-  return `{
-${result.join('\n')}
-}`;
+  return result;
 };
 
-export { getObject, convertToString };
+const convertToString = (list) => `{
+${list.join('\n')}
+}`;
+
+export {
+  readFile,
+  getExtension,
+  buildTreeOfDifferences,
+  makeDifferenceList,
+  convertToString,
+};
