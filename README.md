@@ -12,4 +12,8 @@
 - Mac or Linux
 - Node.js version 13 and later
 
+#### JSON files:
 [![asciicast](https://asciinema.org/a/CG9rBnY31ZlTSWG3H0h9Sb1yD.svg)](https://asciinema.org/a/CG9rBnY31ZlTSWG3H0h9Sb1yD)
+
+#### YML files:
+[![asciicast](https://asciinema.org/a/sE1RXgRnwWjLz6jcILJCvpQFB.svg)](https://asciinema.org/a/sE1RXgRnwWjLz6jcILJCvpQFB)
