@@ -1,4 +1,4 @@
-import findDifferences from '../src/index.js';
+import printDifferences from '../src/index.js';
 
 const result = `{
   - follow: false
@@ -9,9 +9,13 @@ const result = `{
   + verbose: true
 }`;
 
-const path1 = '__fixtures__/file1.json';
-const path2 = '__fixtures__/file2.json';
+const pathJson1 = '__fixtures__/file1.json';
+const pathJson2 = '__fixtures__/file2.json';
+
+const pathYml1 = '__fixtures__/file1.yml';
+const pathYml2 = '__fixtures__/file2.yaml';
 
 test('differences', () => {
-  expect(findDifferences(path1, path2)).toEqual(result);
+  expect(printDifferences(pathJson1, pathJson2)).toEqual(result);
+  expect(printDifferences(pathYml1, pathYml2)).toEqual(result);
 });
