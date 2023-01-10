@@ -1,5 +1,5 @@
 import { readFile, getExtension } from './utils.js';
-import printObjectInStylish from './stylish.js';
+import defineFormat from './formatters/index.js';
 import toParseFile from './parsers.js';
 import buildTreeOfDifferences from './tree-builder.js';
 
@@ -10,10 +10,8 @@ const printDifferences = (pathToFile1, pathToFile2, format = 'stylish') => {
   const object2 = toParseFile(file2, extension2);
   const diffsTree = buildTreeOfDifferences(object1, object2);
 
-  if (format === 'stylish') {
-    return printObjectInStylish(diffsTree);
-  }
-  return Error(`Unknown format: '${format}'!`);
+  const convertToString = defineFormat(format);
+  return convertToString(diffsTree);
 };
 
 export default printDifferences;
