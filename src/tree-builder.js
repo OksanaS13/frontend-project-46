@@ -1,9 +1,10 @@
 import _ from 'lodash';
 
 const buildTreeOfDifferences = (object1, object2) => {
-  const keys = _.uniq([...Object.keys(object1), ...Object.keys(object2)]).sort();
+  const keys = _.uniq([...Object.keys(object1), ...Object.keys(object2)]);
+  const sortedKeys = _.sortBy(keys);
 
-  const diffs = keys.reduce((acc, key) => {
+  const diffs = sortedKeys.reduce((acc, key) => {
     if (!Object.hasOwn(object1, key) || !Object.hasOwn(object2, key)) {
       const value = Object.hasOwn(object1, key) ? object1[key] : object2[key];
       const status = Object.hasOwn(object1, key) ? 'deleted' : 'added';
