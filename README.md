@@ -23,3 +23,6 @@
 
 #### Nested files in 'plain' format:
 [![asciicast](https://asciinema.org/a/Xdd2dV5PNcoZKRxb0pX83TN2n.svg)](https://asciinema.org/a/Xdd2dV5PNcoZKRxb0pX83TN2n)
+
+#### Nested files in 'json' format:
+[![asciicast](https://asciinema.org/a/nFB4UjrwPKRI73hHEHnK9d4zZ.svg)](https://asciinema.org/a/nFB4UjrwPKRI73hHEHnK9d4zZ)
