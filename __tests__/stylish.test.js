@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
-import printObjectInStylish from '../src/stylish.js';
+import printDiffsInStylish from '../src/formatters/stylish.js';
 import { readFile, getExtension } from '../src/utils.js';
 import toParseFile from '../src/parsers.js';
 import buildTreeOfDifferences from '../src/tree-builder.js';
@@ -64,5 +64,5 @@ test('Convert to string', () => {
   const object2 = toParseFile(file2, extension2);
   const tree = buildTreeOfDifferences(object1, object2);
 
-  expect(printObjectInStylish(tree)).toEqual(expectedResult);
+  expect(printDiffsInStylish(tree)).toEqual(expectedResult);
 });
