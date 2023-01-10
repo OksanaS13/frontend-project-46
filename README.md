@@ -17,3 +17,6 @@
 
 #### YML files:
 [![asciicast](https://asciinema.org/a/sE1RXgRnwWjLz6jcILJCvpQFB.svg)](https://asciinema.org/a/sE1RXgRnwWjLz6jcILJCvpQFB)
+
+#### Nested files:
+[![asciicast](https://asciinema.org/a/maIv0A8mc200TkUW0TO0ffaa3.svg)](https://asciinema.org/a/maIv0A8mc200TkUW0TO0ffaa3)
