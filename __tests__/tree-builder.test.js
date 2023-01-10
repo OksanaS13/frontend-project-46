@@ -4,15 +4,27 @@ import buildTreeOfDifferences from '../src/tree-builder.js';
 import { readFile, getExtension } from '../src/utils.js';
 import toParseFile from '../src/parsers.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let file1;
+let file2;
+let file3;
+let file4;
 
-const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
+beforeAll(() => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
-const pathToJson1 = getFixturePath('file1.json');
-const pathToJson2 = getFixturePath('file2.json');
-const pathToYml3 = getFixturePath('file3.yml');
-const pathToYml4 = getFixturePath('file4.yaml');
+  const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
+
+  const pathToJson1 = getFixturePath('file1.json');
+  const pathToJson2 = getFixturePath('file2.json');
+  const pathToYml3 = getFixturePath('file3.yml');
+  const pathToYml4 = getFixturePath('file4.yaml');
+
+  file1 = toParseFile(readFile(pathToJson1), getExtension(pathToJson1));
+  file2 = toParseFile(readFile(pathToJson2), getExtension(pathToJson2));
+  file3 = toParseFile(readFile(pathToYml3), getExtension(pathToYml3));
+  file4 = toParseFile(readFile(pathToYml4), getExtension(pathToYml4));
+});
 
 test('tree of differences', () => {
   const plainResult = {
@@ -129,12 +141,6 @@ test('tree of differences', () => {
       status: 'added',
     },
   };
-
-  const file1 = toParseFile(readFile(pathToJson1), getExtension(pathToJson1));
-  const file2 = toParseFile(readFile(pathToJson2), getExtension(pathToJson2));
-
-  const file3 = toParseFile(readFile(pathToYml3), getExtension(pathToYml3));
-  const file4 = toParseFile(readFile(pathToYml4), getExtension(pathToYml4));
 
   expect(buildTreeOfDifferences(file1, file2)).toEqual(plainResult);
   expect(buildTreeOfDifferences(file3, file4)).toEqual(nestedResult);
