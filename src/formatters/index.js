@@ -1,14 +1,18 @@
 import printDiffsInStylish from './stylish.js';
 import printDiffsInPlain from './plain.js';
+import printInJson from './json.js';
 
 const defineFormat = (format) => {
-  if (format === 'plain') {
-    return printDiffsInPlain;
+  switch (format) {
+    case 'plain':
+      return printDiffsInPlain;
+    case 'stylish':
+      return printDiffsInStylish;
+    case 'json':
+      return printInJson;
+    default:
+      return Error(`Unknown format: '${format}'!`);
   }
-  if (format === 'stylish') {
-    return printDiffsInStylish;
-  }
-  return Error(`Unknown format: '${format}'!`);
 };
 
 export default defineFormat;
