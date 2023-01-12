@@ -1,0 +1,163 @@
+{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            doge: {
+              - wow: 
+              + wow: so much
+            }
+            key: value
+          + ops: vops
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: {
+            id: 45
+        }
+    }
+  + group3: {
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
+    }
+}
+
+Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
+
+{
+  "common": {
+    "follow": {
+      "value": false,
+      "status": "added"
+    },
+    "setting1": {
+      "value": "Value 1",
+      "status": "equal"
+    },
+    "setting2": {
+      "value": 200,
+      "status": "deleted"
+    },
+    "setting3": [
+      {
+        "value": true,
+        "status": "deleted"
+      },
+      {
+        "value": null,
+        "status": "added"
+      }
+    ],
+    "setting4": {
+      "value": "blah blah",
+      "status": "added"
+    },
+    "setting5": {
+      "value": {
+        "key5": "value5"
+      },
+      "status": "added"
+    },
+    "setting6": {
+      "doge": {
+        "wow": [
+          {
+            "value": "",
+            "status": "deleted"
+          },
+          {
+            "value": "so much",
+            "status": "added"
+          }
+        ]
+      },
+      "key": {
+        "value": "value",
+        "status": "equal"
+      },
+      "ops": {
+        "value": "vops",
+        "status": "added"
+      }
+    }
+  },
+  "group1": {
+    "baz": [
+      {
+        "value": "bas",
+        "status": "deleted"
+      },
+      {
+        "value": "bars",
+        "status": "added"
+      }
+    ],
+    "foo": {
+      "value": "bar",
+      "status": "equal"
+    },
+    "nest": [
+      {
+        "value": {
+          "key": "value"
+        },
+        "status": "deleted"
+      },
+      {
+        "value": "str",
+        "status": "added"
+      }
+    ]
+  },
+  "group2": {
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    },
+    "status": "deleted"
+  },
+  "group3": {
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    },
+    "status": "added"
+  }
+}
