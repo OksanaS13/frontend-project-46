@@ -1,72 +1,28 @@
-import printDifferences from '../src/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import genDiff from '../src/index.js';
 
-const plainResult = `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const nestedResult = `{
-    common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: {
-            key5: value5
-        }
-        setting6: {
-            doge: {
-              - wow: 
-              + wow: so much
-            }
-            key: value
-          + ops: vops
-        }
-    }
-    group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: {
-            key: value
-        }
-      + nest: str
-    }
-  - group2: {
-        abc: 12345
-        deep: {
-            id: 45
-        }
-    }
-  + group3: {
-        deep: {
-            id: {
-                number: 45
-            }
-        }
-        fee: 100500
-    }
-}`;
+const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 
-const pathJson1 = '__fixtures__/file1.json';
-const pathJson2 = '__fixtures__/file2.json';
-const pathJson3 = '__fixtures__/file3.json';
-const pathJson4 = '__fixtures__/file4.json';
+const files = {};
 
-const pathYml1 = '__fixtures__/file1.yml';
-const pathYml2 = '__fixtures__/file2.yaml';
-const pathYml3 = '__fixtures__/file3.yml';
-const pathYml4 = '__fixtures__/file4.yaml';
+beforeAll(() => {
+  const [jsonFile1, jsonFile2] = [fs.readFileSync(getFixturePath('file1.json'), 'utf-8'), fs.readFileSync(getFixturePath('file2.json'), 'utf-8')];
+  const [ymlFile1, ymlFile2] = [fs.readFileSync(getFixturePath('file1.yml'), 'utf-8'), fs.readFileSync(getFixturePath('file2.yaml'), 'utf-8')];
 
-test('differences', () => {
-  expect(printDifferences(pathJson1, pathJson2)).toEqual(plainResult);
-  expect(printDifferences(pathYml1, pathYml2)).toEqual(plainResult);
-  expect(printDifferences(pathJson3, pathJson4)).toEqual(nestedResult);
-  expect(printDifferences(pathYml3, pathYml4)).toEqual(nestedResult);
+  files.json = [jsonFile1, jsonFile2];
+  files.yml = [ymlFile1, ymlFile2];
+});
+
+test('generate difference', () => {
+  const expectedResults = fs.readFileSync(getFixturePath('expected-results.txt'), 'utf-8').trim().split('\n\n');
+  const [stylish, plain, json] = expectedResults;
+
+  expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json')).toEqual(stylish);
+  expect(genDiff('__fixtures__/file1.yml', '__fixtures__/file2.yaml', 'plain')).toEqual(plain);
+  expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.yaml', 'json')).toEqual(json);
 });
