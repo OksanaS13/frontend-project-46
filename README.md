@@ -1,4 +1,4 @@
-# Finder of differences
+# GenDiff
 
 ### Hexlet tests and linter status:
 
@@ -6,11 +6,17 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/76116ca98acd5b79c2d0/maintainability)](https://codeclimate.com/github/OksanaS13/frontend-project-46/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/76116ca98acd5b79c2d0/test_coverage)](https://codeclimate.com/github/OksanaS13/frontend-project-46/test_coverage)
 
+### Description
+GenDiff - a program that displays the differences between two data structures.
+
+### Program Features
+- Supported input formats - json, yaml.
+- The result is displayed in one of the styles: stylish, plain, json.
 
 ### System requirements
 
 - Mac or Linux
-- Node.js version 13 and later
+- Node.js version 18 and later
 
 #### JSON files:
 [![asciicast](https://asciinema.org/a/CG9rBnY31ZlTSWG3H0h9Sb1yD.svg)](https://asciinema.org/a/CG9rBnY31ZlTSWG3H0h9Sb1yD)
