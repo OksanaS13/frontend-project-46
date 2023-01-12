@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/OksanaS13/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/OksanaS13/frontend-project-46/actions)",
+  "description": "GenDiff - a program that displays the differences between two data structures.",
   "main": "src/index.js",
   "type": "module",
   "bin": {
