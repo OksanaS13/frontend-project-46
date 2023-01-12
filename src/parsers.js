@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 
-const toParseFile = (data, extension) => {
+const parse = (data, extension) => {
   if (extension === 'json') {
     return JSON.parse(data);
   }
@@ -10,4 +10,4 @@ const toParseFile = (data, extension) => {
   return Error(`Unknown extension: '${extension}'!`);
 };
 
-export default toParseFile;
+export default parse;
