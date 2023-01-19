@@ -9,26 +9,31 @@ const getCorrectString = (item) => {
 
 const printDiffsInPlain = (data) => {
   const iter = (currentValue, path) => {
-    if (Object.hasOwn(currentValue, 'status')) {
-      if (currentValue.status === 'deleted') {
-        return `Property '${path}' was removed`;
-      }
-      if (currentValue.status === 'added') {
-        const value = getCorrectString(currentValue.value);
-        return `Property '${path}' was added with value: ${value}`;
-      }
-      return '';
-    }
-    if (Array.isArray(currentValue)) {
-      const deletedValue = getCorrectString(currentValue[0].value);
-      const addedValue = getCorrectString(currentValue[1].value);
-      return `Property '${path}' was updated. From ${deletedValue} to ${addedValue}`;
-    }
-    const diffs = Object.entries(currentValue).reduce((acc, [key, val]) => {
-      const currentPath = path ? `${path}.${key}` : `${key}`;
-      const currentResult = iter(val, currentPath);
-      return currentResult ? [...acc, currentResult] : [...acc];
-    }, []);
+    const diffs = Object
+      .entries(currentValue)
+      .reduce((acc, [key, val]) => {
+        const currentPath = path ? `${path}.${key}` : `${key}`;
+        switch (val.status) {
+          case 'added': {
+            const value = getCorrectString(val.value);
+            return [...acc, `Property '${currentPath}' was added with value: ${value}`];
+          }
+          case 'deleted':
+            return [...acc, `Property '${currentPath}' was removed`];
+          case 'changed': {
+            const deletedValue = getCorrectString(val.changes.deleted);
+            const addedValue = getCorrectString(val.changes.added);
+            return [...acc, `Property '${currentPath}' was updated. From ${deletedValue} to ${addedValue}`];
+          }
+          case 'nested': {
+            const currentResult = iter(val.children, currentPath);
+            return currentResult ? [...acc, currentResult] : [...acc];
+          }
+          default:
+            return [...acc];
+        }
+      }, []);
+
     return diffs.join('\n');
   };
   return iter(data, '');

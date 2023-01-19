@@ -2,7 +2,7 @@ import printDiffsInStylish from './stylish.js';
 import printDiffsInPlain from './plain.js';
 import printInJson from './json.js';
 
-const defineFormat = (format) => {
+const defineFormatter = (format) => {
   switch (format) {
     case 'plain':
       return printDiffsInPlain;
@@ -15,4 +15,4 @@ const defineFormat = (format) => {
   }
 };
 
-export default defineFormat;
+export default defineFormatter;

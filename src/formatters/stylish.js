@@ -1,41 +1,56 @@
 import _ from 'lodash';
 
-const printDiffsInStylish = (data, indent = ' ', spacesCount = 4) => {
-  const iter = (obj, depth) => {
-    if (!_.isObject(obj)) {
-      return `${obj}`;
-    }
-    const indentCount = depth * spacesCount;
-    const currentIndent = indent.repeat(indentCount);
-    const bracketIndent = indent.repeat(indentCount - spacesCount);
+const getIndent = (depth, status = 'nested', indent = ' ') => {
+  const signs = {
+    deleted: '-', added: '+', unchanged: ' ', nested: ' ',
+  };
+  const spacesCount = depth * 4 - 2;
 
-    const lines = Object.entries(obj).map(([key, value]) => {
-      if (Array.isArray(value)) {
-        const arr = [
-          `${currentIndent.slice(0, -2)}- ${[key]}: ${iter(value[0].value, depth + 1)}`,
-          `${currentIndent.slice(0, -2)}+ ${[key]}: ${iter(value[1].value, depth + 1)}`,
-        ];
-        return arr.join('\n');
-      }
-      if (Object.hasOwn(value, 'status')) {
-        switch (value.status) {
-          case 'equal':
-            return `${currentIndent}${[key]}: ${iter(value.value, depth + 1)}`;
-          case 'deleted':
-            return `${currentIndent.slice(0, -2)}- ${[key]}: ${iter(value.value, depth + 1)}`;
-          default:
-            return `${currentIndent.slice(0, -2)}+ ${[key]}: ${iter(value.value, depth + 1)}`;
-        }
-      }
-      return `${currentIndent}${[key]}: ${iter(value, depth + 1)}`;
+  return (spacesCount > 0) ? `${indent.repeat(spacesCount)}${signs[status]} ` : '';
+};
+
+const stringify = (data, depth) => {
+  if (!_.isObject(data)) {
+    return String(data);
+  }
+
+  const output = Object
+    .entries(data)
+    .map(([key, val]) => {
+      const res = `${getIndent(depth + 1)}${key}: ${stringify(val, depth + 1)}`;
+
+      return res;
     });
-    return ['{',
+
+  return `{\n${output.join('\n')}\n${getIndent(depth)}}`;
+};
+
+const printDiffsInStylish = (tree) => {
+  const iter = (data, depth) => {
+    const lines = Object
+      .entries(data)
+      .map(([key, val]) => {
+        switch (val.status) {
+          case 'added':
+          case 'deleted':
+          case 'unchanged':
+            return `${getIndent(depth, val.status)}${key}: ${stringify(val.value, depth)}`;
+          case 'changed':
+            return `${getIndent(depth, 'deleted')}${key}: ${stringify(val.changes.deleted, depth)}
+${getIndent(depth, 'added')}${key}: ${stringify(val.changes.added, depth)}`;
+          case 'nested':
+            return `${getIndent(depth, val.status)}${key}: {\n${iter(val.children, depth + 1)}`;
+          default:
+            return new Error(`Unknown operator: '${val.status}'!`);
+        }
+      });
+
+    return [
       ...lines,
-      `${bracketIndent}}`,
+      `${getIndent(depth - 1)}}`,
     ].join('\n');
   };
-
-  return iter(data, 1);
+  return `{\n${iter(tree, 1)}`;
 };
 
 export default printDiffsInStylish;
