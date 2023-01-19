@@ -57,99 +57,100 @@ Property 'group3' was added with value: [complex value]
 
 {
   "common": {
-    "follow": {
-      "value": false,
-      "status": "added"
-    },
-    "setting1": {
-      "value": "Value 1",
-      "status": "equal"
-    },
-    "setting2": {
-      "value": 200,
-      "status": "deleted"
-    },
-    "setting3": [
-      {
-        "value": true,
-        "status": "deleted"
+    "status": "nested",
+    "children": {
+      "follow": {
+        "status": "added",
+        "value": false
       },
-      {
-        "value": null,
-        "status": "added"
-      }
-    ],
-    "setting4": {
-      "value": "blah blah",
-      "status": "added"
-    },
-    "setting5": {
-      "value": {
-        "key5": "value5"
+      "setting1": {
+        "status": "unchanged",
+        "value": "Value 1"
       },
-      "status": "added"
-    },
-    "setting6": {
-      "doge": {
-        "wow": [
-          {
-            "value": "",
-            "status": "deleted"
+      "setting2": {
+        "status": "deleted",
+        "value": 200
+      },
+      "setting3": {
+        "status": "changed",
+        "changes": {
+          "deleted": true,
+          "added": null
+        }
+      },
+      "setting4": {
+        "status": "added",
+        "value": "blah blah"
+      },
+      "setting5": {
+        "status": "added",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      "setting6": {
+        "status": "nested",
+        "children": {
+          "doge": {
+            "status": "nested",
+            "children": {
+              "wow": {
+                "status": "changed",
+                "changes": {
+                  "deleted": "",
+                  "added": "so much"
+                }
+              }
+            }
           },
-          {
-            "value": "so much",
-            "status": "added"
+          "key": {
+            "status": "unchanged",
+            "value": "value"
+          },
+          "ops": {
+            "status": "added",
+            "value": "vops"
           }
-        ]
-      },
-      "key": {
-        "value": "value",
-        "status": "equal"
-      },
-      "ops": {
-        "value": "vops",
-        "status": "added"
+        }
       }
     }
   },
   "group1": {
-    "baz": [
-      {
-        "value": "bas",
-        "status": "deleted"
+    "status": "nested",
+    "children": {
+      "baz": {
+        "status": "changed",
+        "changes": {
+          "deleted": "bas",
+          "added": "bars"
+        }
       },
-      {
-        "value": "bars",
-        "status": "added"
-      }
-    ],
-    "foo": {
-      "value": "bar",
-      "status": "equal"
-    },
-    "nest": [
-      {
-        "value": {
-          "key": "value"
-        },
-        "status": "deleted"
+      "foo": {
+        "status": "unchanged",
+        "value": "bar"
       },
-      {
-        "value": "str",
-        "status": "added"
+      "nest": {
+        "status": "changed",
+        "changes": {
+          "deleted": {
+            "key": "value"
+          },
+          "added": "str"
+        }
       }
-    ]
+    }
   },
   "group2": {
+    "status": "deleted",
     "value": {
       "abc": 12345,
       "deep": {
         "id": 45
       }
-    },
-    "status": "deleted"
+    }
   },
   "group3": {
+    "status": "added",
     "value": {
       "deep": {
         "id": {
@@ -157,7 +158,6 @@ Property 'group3' was added with value: [complex value]
         }
       },
       "fee": 100500
-    },
-    "status": "added"
+    }
   }
 }
