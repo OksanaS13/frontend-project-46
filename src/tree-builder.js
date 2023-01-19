@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const buildTreeOfDifferences = (object1, object2) => {
-  const keys = _.union([...Object.keys(object1), ...Object.keys(object2)]);
+  const keys = _.union(Object.keys(object1), Object.keys(object2));
   const sortedKeys = _.sortBy(keys);
 
   const diffs = sortedKeys.reduce((acc, key) => {
