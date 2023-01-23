@@ -1,12 +1,12 @@
 import _ from 'lodash';
 
-const getIndent = (depth, status = 'nested', indent = ' ') => {
-  const signs = {
-    deleted: '-', added: '+', unchanged: ' ', nested: ' ',
-  };
-  const spacesCount = depth * 4 - 2;
+const getIndent = (depth, indent = ' ') => `${indent.repeat(depth * 4)}`;
 
-  return (spacesCount > 0) ? `${indent.repeat(spacesCount)}${signs[status]} ` : '';
+const getSign = (type) => {
+  const signs = {
+    deleted: '-', added: '+', unchanged: ' ',
+  };
+  return `${signs[type]} `;
 };
 
 const stringify = (data, depth) => {
@@ -16,11 +16,7 @@ const stringify = (data, depth) => {
 
   const output = Object
     .entries(data)
-    .map(([key, val]) => {
-      const res = `${getIndent(depth + 1)}${key}: ${stringify(val, depth + 1)}`;
-
-      return res;
-    });
+    .map(([key, val]) => `${getIndent(depth + 1)}${key}: ${stringify(val, depth + 1)}`);
 
   return `{\n${output.join('\n')}\n${getIndent(depth)}}`;
 };
@@ -30,18 +26,18 @@ const printDiffsInStylish = (tree) => {
     const lines = Object
       .entries(data)
       .map(([key, val]) => {
-        switch (val.status) {
+        switch (val.type) {
           case 'added':
           case 'deleted':
           case 'unchanged':
-            return `${getIndent(depth, val.status)}${key}: ${stringify(val.value, depth)}`;
+            return `${getIndent(depth).slice(0, -2)}${getSign(val.type)}${key}: ${stringify(val.value, depth)}`;
           case 'changed':
-            return `${getIndent(depth, 'deleted')}${key}: ${stringify(val.changes.deleted, depth)}
-${getIndent(depth, 'added')}${key}: ${stringify(val.changes.added, depth)}`;
+            return `${getIndent(depth).slice(0, -2)}${getSign('deleted')}${key}: ${stringify(val.changes.deleted, depth)}
+${getIndent(depth).slice(0, -2)}${getSign('added')}${key}: ${stringify(val.changes.added, depth)}`;
           case 'nested':
-            return `${getIndent(depth, val.status)}${key}: {\n${iter(val.children, depth + 1)}`;
+            return `${getIndent(depth)}${key}: {\n${iter(val.children, depth + 1)}`;
           default:
-            return new Error(`Unknown operator: '${val.status}'!`);
+            return new Error(`Unknown type: '${val.type}'!`);
         }
       });
 
