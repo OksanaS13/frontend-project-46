@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const getCorrectString = (item) => {
+const stringify = (item) => {
   if (_.isObject(item)) {
     return '[complex value]';
   }
@@ -13,24 +13,26 @@ const printDiffsInPlain = (data) => {
       .entries(currentValue)
       .reduce((acc, [key, val]) => {
         const currentPath = path ? `${path}.${key}` : `${key}`;
-        switch (val.status) {
+        switch (val.type) {
           case 'added': {
-            const value = getCorrectString(val.value);
+            const value = stringify(val.value);
             return [...acc, `Property '${currentPath}' was added with value: ${value}`];
           }
           case 'deleted':
             return [...acc, `Property '${currentPath}' was removed`];
           case 'changed': {
-            const deletedValue = getCorrectString(val.changes.deleted);
-            const addedValue = getCorrectString(val.changes.added);
+            const deletedValue = stringify(val.changes.deleted);
+            const addedValue = stringify(val.changes.added);
             return [...acc, `Property '${currentPath}' was updated. From ${deletedValue} to ${addedValue}`];
           }
           case 'nested': {
             const currentResult = iter(val.children, currentPath);
             return currentResult ? [...acc, currentResult] : [...acc];
           }
-          default:
+          case 'unchanged':
             return [...acc];
+          default:
+            return new Error(`Unknown type: '${val.type}'!`);
         }
       }, []);
 
