@@ -57,45 +57,45 @@ Property 'group3' was added with value: [complex value]
 
 {
   "common": {
-    "status": "nested",
+    "type": "nested",
     "children": {
       "follow": {
-        "status": "added",
+        "type": "added",
         "value": false
       },
       "setting1": {
-        "status": "unchanged",
+        "type": "unchanged",
         "value": "Value 1"
       },
       "setting2": {
-        "status": "deleted",
+        "type": "deleted",
         "value": 200
       },
       "setting3": {
-        "status": "changed",
+        "type": "changed",
         "changes": {
           "deleted": true,
           "added": null
         }
       },
       "setting4": {
-        "status": "added",
+        "type": "added",
         "value": "blah blah"
       },
       "setting5": {
-        "status": "added",
+        "type": "added",
         "value": {
           "key5": "value5"
         }
       },
       "setting6": {
-        "status": "nested",
+        "type": "nested",
         "children": {
           "doge": {
-            "status": "nested",
+            "type": "nested",
             "children": {
               "wow": {
-                "status": "changed",
+                "type": "changed",
                 "changes": {
                   "deleted": "",
                   "added": "so much"
@@ -104,11 +104,11 @@ Property 'group3' was added with value: [complex value]
             }
           },
           "key": {
-            "status": "unchanged",
+            "type": "unchanged",
             "value": "value"
           },
           "ops": {
-            "status": "added",
+            "type": "added",
             "value": "vops"
           }
         }
@@ -116,21 +116,21 @@ Property 'group3' was added with value: [complex value]
     }
   },
   "group1": {
-    "status": "nested",
+    "type": "nested",
     "children": {
       "baz": {
-        "status": "changed",
+        "type": "changed",
         "changes": {
           "deleted": "bas",
           "added": "bars"
         }
       },
       "foo": {
-        "status": "unchanged",
+        "type": "unchanged",
         "value": "bar"
       },
       "nest": {
-        "status": "changed",
+        "type": "changed",
         "changes": {
           "deleted": {
             "key": "value"
@@ -141,7 +141,7 @@ Property 'group3' was added with value: [complex value]
     }
   },
   "group2": {
-    "status": "deleted",
+    "type": "deleted",
     "value": {
       "abc": 12345,
       "deep": {
@@ -150,7 +150,7 @@ Property 'group3' was added with value: [complex value]
     }
   },
   "group3": {
-    "status": "added",
+    "type": "added",
     "value": {
       "deep": {
         "id": {
