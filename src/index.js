@@ -5,14 +5,14 @@ import formatData from './formatters/index.js';
 import parse from './parsers.js';
 import buildTreeOfDifferences from './tree-builder.js';
 
-const buildCorrectPath = (pathToFile) => path.resolve(process.cwd(), pathToFile);
+const buildAbsolutePath = (pathToFile) => path.resolve(process.cwd(), pathToFile);
 
 const readFile = (pathToFile) => fs.readFileSync(pathToFile, 'utf8');
 
 const getExtension = (pathToFile) => path.extname(pathToFile).slice(1);
 
 const getData = (pathToFile) => {
-  const correctPath = buildCorrectPath(pathToFile);
+  const correctPath = buildAbsolutePath(pathToFile);
   return readFile(correctPath);
 };
 
